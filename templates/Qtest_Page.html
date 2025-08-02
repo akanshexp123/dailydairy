@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Progress Diary</title>
+    <title>Daily Diary</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         * {
             margin: 0;
@@ -278,8 +279,7 @@
 
         <main class="main-content">
             <div class="page-title">
-                <h1>Daily Progress Diary</h1>
-                <p>Reflect on your day and track your growth</p>
+                <h1>Daily Diary</h1>
             </div>
 
             <form id="diaryForm" action="{{ url_for('submit_responses') }}" method="POST">
@@ -397,4 +397,5 @@
         });
     </script>
 </body>
+
 </html>
