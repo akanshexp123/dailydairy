@@ -78,6 +78,9 @@ class ControlTable(db.Model):
 def artifact_file(filename):
     return send_from_directory('artifact', filename)
 
+@app.route('/manifest.json')
+def manifest():
+    return send_from_directory('static', 'manifest.json')
 
 @app.route('/user_input/')
 def control_user():
@@ -700,4 +703,5 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run()
+
 
