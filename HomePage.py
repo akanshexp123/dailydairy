@@ -123,7 +123,7 @@ def next_page():
 
 def getControlAnalyticsData(roll_number):
     ## Need to be changed
-    start_date = '05-AUG-25'
+    start_date = '06-AUG-25'
     start_date = datetime.strptime(start_date, '%d-%b-%y').date()
     today = datetime.today().date()
     total_days = today - start_date
@@ -484,7 +484,7 @@ def generate_weekly_chart_data(start_date, end_date, submitted_dates):
 
 def getAnalyticsData(roll_number):
     ## Need to be changed
-    start_date = '05-AUG-25'
+    start_date = '06-AUG-25'
     start_date = datetime.strptime(start_date, '%d-%b-%y').date()
     today = datetime.today().date()
     total_days = today - start_date
@@ -705,6 +705,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run()
+
 
 
 
