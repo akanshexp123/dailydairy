@@ -123,7 +123,7 @@ def next_page():
 
 def getControlAnalyticsData(roll_number):
     ## Need to be changed
-    start_date = '01-JUN-25'
+    start_date = '05-AUG-25'
     start_date = datetime.strptime(start_date, '%d-%b-%y').date()
     today = datetime.today().date()
     total_days = today - start_date
@@ -179,6 +179,8 @@ def update_control(name, roll_number, today):
     db.session.commit()
 
 def checkSanity(text, previous):
+    if len(previous) < 2:
+        return True
     matcher0 = difflib.SequenceMatcher(None, text.lower(), previous[0].lower()).ratio() * 100
     matcher1 = difflib.SequenceMatcher(None, text.lower(), previous[1].lower()).ratio() * 100
     if matcher0 > 75 and matcher1 > 75:
@@ -243,7 +245,7 @@ def submit_responses():
 
     Question = ["What do you want to do today?", "What are you grateful for today?", "What are your small wins today?"]
 
-    for i in range(1,3):
+    for i in range(1,len(recent_responses)):
         prevQ1.append(recent_responses[i].question_1)
         prevQ2.append(recent_responses[i].question_2)
         prevQ3.append(recent_responses[i].question_3)
@@ -482,7 +484,7 @@ def generate_weekly_chart_data(start_date, end_date, submitted_dates):
 
 def getAnalyticsData(roll_number):
     ## Need to be changed
-    start_date = '01-JUN-25'
+    start_date = '05-AUG-25'
     start_date = datetime.strptime(start_date, '%d-%b-%y').date()
     today = datetime.today().date()
     total_days = today - start_date
@@ -703,5 +705,6 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run()
+
 
 
