@@ -197,7 +197,7 @@ def checkMeaningful(text,question):
     dialogue = f'''
     Answer in Yes/No only for the question
 
-    Is the "{text}" a meaningful answer to the question "{question}"
+    Is the "{text}" contains valid word or words?
     '''
 
     try:
@@ -705,6 +705,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run()
+
 
 
 
