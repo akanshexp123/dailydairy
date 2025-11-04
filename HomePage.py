@@ -225,7 +225,7 @@ def checkMeaningful(text,question):
 def checkValidResponse(answers, previous, question):
     reply = []
     for answer in answers:
-        validity = checkSanity(answer, previous) and checkMeaningful(answer, question)
+        validity = checkSanity(answer, previous) ## need to add checkMeaningful(answer, question)
         if not validity:
             reply.append(False)
         else:
@@ -706,6 +706,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run()
+
 
 
 
