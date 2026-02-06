@@ -359,8 +359,8 @@
         </header>
 
         <main class="quiz-content">
-            <h1 class="quiz-title">Math Quiz Challenge</h1>
-            
+            <h1 class="quiz-title">Daily Challenge</h1>
+
             <div class="progress-section">
                 <div class="progress-text">Progress: <span id="progressText">0 / 3 answered</span></div>
                 <div class="progress-bar">
@@ -369,49 +369,43 @@
             </div>
 
             <div class="questions-grid">
-                <!-- Question 1 -->
                 <div class="question-card" id="question1">
-                    <div class="question-number">Question 1</div>
-                    <div class="question-display" id="questionDisplay1">5 + 3 = ?</div>
-                    <input 
-                        type="number" 
-                        class="answer-input" 
-                        id="answerInput1" 
-                        placeholder="?" 
-                        min="0" 
-                        max="18"
+                    <div class="question-number">Question 1 (Math)</div>
+                    <div class="question-display" id="questionDisplay1">...</div>
+                    <input
+                        type="number"
+                        class="answer-input"
+                        id="answerInput1"
+                        placeholder="?"
+                        min="0"
                         autocomplete="off"
                     >
                     <div class="question-feedback" id="feedback1"></div>
                 </div>
 
-                <!-- Question 2 -->
                 <div class="question-card" id="question2">
-                    <div class="question-number">Question 2</div>
-                    <div class="question-display" id="questionDisplay2">7 + 2 = ?</div>
-                    <input 
-                        type="number" 
-                        class="answer-input" 
-                        id="answerInput2" 
-                        placeholder="?" 
-                        min="0" 
-                        max="18"
+                    <div class="question-number">Question 2 (Math)</div>
+                    <div class="question-display" id="questionDisplay2">...</div>
+                    <input
+                        type="number"
+                        class="answer-input"
+                        id="answerInput2"
+                        placeholder="?"
+                        min="0"
                         autocomplete="off"
                     >
                     <div class="question-feedback" id="feedback2"></div>
                 </div>
 
-                <!-- Question 3 -->
                 <div class="question-card" id="question3">
-                    <div class="question-number">Question 3</div>
-                    <div class="question-display" id="questionDisplay3">4 + 6 = ?</div>
-                    <input 
-                        type="number" 
-                        class="answer-input" 
-                        id="answerInput3" 
-                        placeholder="?" 
-                        min="0" 
-                        max="18"
+                    <div class="question-number">Question 3 (GK)</div>
+                    <div class="question-display" id="questionDisplay3">...</div>
+                    <input
+                        type="number"
+                        class="answer-input"
+                        id="answerInput3"
+                        placeholder="?"
+                        min="0"
                         autocomplete="off"
                     >
                     <div class="question-feedback" id="feedback3"></div>
@@ -435,52 +429,104 @@
         // Go back function
         function goBack() {
             console.log('Going back to previous page');
-			window.history.back(); 
-			// alert('Information: Record your responses daily');
+			window.history.back();
         }
 
         let questions = [];
-        
         let answeredCount = 0;
         let correctCount = 0;
 
-        // Generate random single-digit addition question
-        function generateRandomQuestion() {
-            const num1 = Math.floor(Math.random() * 10);
-            const num2 = Math.floor(Math.random() * 10);
+        // GK Question Database
+        const gkQuestions = [
+            { q: "Days in a leap year?", a: 366 },
+            { q: "Sides in a standard die?", a: 6 },
+            { q: "Players in a cricket team?", a: 11 },
+            { q: "Year India got independence?", a: 1947 },
+            { q: "How many colors in a rainbow?", a: 7 },
+            { q: "Number of continents on Earth?", a: 7 },
+            { q: "How many seconds in a minute?", a: 60 },
+            { q: "Number of legs on a spider?", a: 8 },
+            { q: "Freezing point of water (°C)?", a: 0 },
+            { q: "States in the USA?", a: 50 },
+            { q: "Sectors in a clock face?", a: 12 },
+            { q: "Degrees in a circle?", a: 360 },
+            { q: "Number of cards in a deck?", a: 52 },
+            { q: "Rings in the Olympic logo?", a: 5 },
+            { q: "Years in a millennium?", a: 1000 }
+        ];
+
+        // Generate Math Question (Big Expression: 3 numbers, 2 ops)
+        // Ensures Positive Integer result
+        function generateMathQuestion() {
+            const ops = ['+', '-', '*', '/'];
+
+            while (true) {
+                // Generate 3 numbers (avoiding 0 for division safety)
+                let n1 = Math.floor(Math.random() * 20) + 2;
+                let n2 = Math.floor(Math.random() * 15) + 2;
+                let n3 = Math.floor(Math.random() * 10) + 2;
+
+                let op1 = ops[Math.floor(Math.random() * ops.length)];
+                let op2 = ops[Math.floor(Math.random() * ops.length)];
+
+                // Construct logic string for evaluation
+                let formula = `${n1} ${op1} ${n2} ${op2} ${n3}`;
+                let ans = eval(formula);
+
+                // Construct display string (prettier symbols)
+                let displayOp1 = op1 === '*' ? '×' : (op1 === '/' ? '÷' : op1);
+                let displayOp2 = op2 === '*' ? '×' : (op2 === '/' ? '÷' : op2);
+                let display = `${n1} ${displayOp1} ${n2} ${displayOp2} ${n3}`;
+
+                // Constraints:
+                // 1. Result must be integer (no decimals)
+                // 2. Result must be positive (0 or higher)
+                // 3. Result shouldn't be too massive (limit to 1000)
+                if (Number.isInteger(ans) && ans >= 0 && ans <= 1000) {
+                    return {
+                        display: display + " = ?",
+                        answer: ans
+                    };
+                }
+            }
+        }
+
+        // Generate GK Question
+        function generateGKQuestion() {
+            const randomIndex = Math.floor(Math.random() * gkQuestions.length);
+            const q = gkQuestions[randomIndex];
             return {
-                num1: num1,
-                num2: num2,
-                answer: num1 + num2
+                display: q.q,
+                answer: q.a
             };
         }
 
         // Generate new set of 3 questions
         function generateNewQuestions() {
             questions = [
-                generateRandomQuestion(),
-                generateRandomQuestion(),
-                generateRandomQuestion()
+                generateMathQuestion(), // Q1: Math
+                generateMathQuestion(), // Q2: Math
+                generateGKQuestion()    // Q3: GK
             ];
-            
+
             // Update displays
             for (let i = 1; i <= 3; i++) {
                 const question = questions[i - 1];
-                document.getElementById(`questionDisplay${i}`).textContent = `${question.num1} + ${question.num2} = ?`;
+                document.getElementById(`questionDisplay${i}`).textContent = question.display;
                 document.getElementById(`answerInput${i}`).value = '';
                 document.getElementById(`question${i}`).className = 'question-card';
                 hideFeedback(i);
             }
-            
+
             // Reset progress
             answeredCount = 0;
             correctCount = 0;
             updateProgress();
-            
+
             // Hide submit button
             document.getElementById('submitBtn').style.display = 'none';
             document.getElementById('checkAllBtn').style.display = 'inline-block';
-            
+
             // Focus first input
             document.getElementById('answerInput1').focus();
         }
@@ -489,16 +535,16 @@
         function checkAllAnswers() {
             answeredCount = 0;
             correctCount = 0;
-            
+
             for (let i = 1; i <= 3; i++) {
                 const userAnswer = parseInt(document.getElementById(`answerInput${i}`).value);
                 const correctAnswer = questions[i - 1].answer;
                 const questionCard = document.getElementById(`question${i}`);
-                
+
                 if (!isNaN(userAnswer)) {
                     answeredCount++;
                     const isCorrect = userAnswer === correctAnswer;
-                    
+
                     if (isCorrect) {
                         correctCount++;
                         showFeedback(i, '🎉 Correct!', 'correct');
@@ -511,9 +557,9 @@
                     }
                 }
             }
-            
+
             updateProgress();
-            
+
             // Show submit button if all questions are answered
             if (answeredCount === 3) {
                 setTimeout(() => {
@@ -521,7 +567,7 @@
                     document.getElementById('checkAllBtn').style.display = 'none';
                 }, 1000);
             }
-            
+
             // Submit data to backend
             submitToBackend({
                 questions: questions,
@@ -553,7 +599,7 @@
         function updateProgress() {
             const progressText = document.getElementById('progressText');
             const progressFill = document.getElementById('progressFill');
-            
+
             progressText.textContent = `${answeredCount} / 3 answered`;
             progressFill.style.width = `${(answeredCount / 3) * 100}%`;
         }
@@ -561,42 +607,21 @@
         // Submit quiz data to backend
         function submitToBackend(data) {
             console.log('Submitting quiz data to backend:', data);
-            
-            /*
-            // Uncomment this for real backend integration:
-            fetch('/api/quiz-submission', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Quiz submission successful:', result);
-            })
-            .catch(error => {
-                console.error('Error submitting quiz:', error);
-            });
-            */
         }
 
         // Add Enter key functionality to all inputs
         for (let i = 1; i <= 3; i++) {
             const input = document.getElementById(`answerInput${i}`);
-            
+
             input.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     checkAllAnswers();
                 }
             });
 
-            // Add number input validation
+            // Add number input validation (Removed the max=18 constraint)
             input.addEventListener('input', function(e) {
                 this.value = this.value.replace(/[^0-9]/g, '');
-                if (parseInt(this.value) > 18) {
-                    this.value = '18';
-                }
             });
 
             // Add visual feedback for focus
